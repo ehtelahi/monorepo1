@@ -1,0 +1,68 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    environment:
+      - PORT=${PORT}
+      # - NODE_ENV=local
+    ports:
+      - '${PORT}:${PORT}'
+    volumes:
+      - .:/usr/src/app
+      - app_node_modules:/usr/src/app/node_modules
+    networks:
+      - app_link_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres
+    restart: always
+    user: ${DATABASE_USER}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - '${DATABASE_PORT}:${DATABASE_PORT}'
+    expose:
+      - ${DATABASE_PORT}
+    command: -p '${DATABASE_PORT}'
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-p', '${DATABASE_PORT}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_link_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_LISTEN_PORT: ${PGADMIN_PORT}
+    ports:
+      - '${PGADMIN_PORT}:${PGADMIN_PORT}'
+    depends_on:
+      - postgres
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - app_link_network
+
+volumes:
+  app_node_modules:
+  db-data:
+  pgadmin_data:
+
+networks:
+  app_link_network:
+    name: app_link_network
