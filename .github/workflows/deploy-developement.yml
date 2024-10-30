@@ -18,8 +18,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Printing Tag
-        run: echo ${{ inputs.tag }}
+      # - name: Printing Tag
+      #   run: echo ${{ inputs.tag }}
 
       - name: Checkout
         uses: actions/checkout@v4
