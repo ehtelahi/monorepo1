@@ -1,25 +1,25 @@
 name: Deploy-to-Developement
 
-# on:
-# workflow_dispatch:
-#   inputs:
-#     tag:
-#       description: 'The Tag To Deploy To Development env'
-#       required: true
-
 on:
-  push:
-    branches: ['main']
+workflow_dispatch:
+  inputs:
+    tag:
+      description: 'The Tag To Deploy To Development env'
+      required: true
+
+# on:
+#   push:
+#     branches: ['main']
 
 jobs:
   deploy:
-    # if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch'
     name: Deploy To Development
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Printing Tag
-      #   run: echo ${{ inputs.tag }}
+      - name: Printing Tag
+        run: echo ${{ inputs.tag }}
 
       - name: Checkout
         uses: actions/checkout@v4
