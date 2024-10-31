@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Printing Tag
-        run: echo ${{ inputs.tag }}
+        run: echo ${{ github.event.inputs.tag }}
 
       - name: Checkout
         uses: actions/checkout@v4
