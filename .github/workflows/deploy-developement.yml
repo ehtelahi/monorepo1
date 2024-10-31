@@ -1,11 +1,15 @@
 name: Deploy-to-Developement
 
 on:
-workflow_dispatch:
-  inputs:
-    tag:
-      description: 'The Tag To Deploy To Development env'
-      required: true
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'The Tag To Deploy To Development env'
+        required: true
+
+# on:
+#   push:
+#     branches: ['main']
 
 jobs:
   deploy:
