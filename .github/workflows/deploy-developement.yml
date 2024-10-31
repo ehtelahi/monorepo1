@@ -7,10 +7,6 @@ workflow_dispatch:
       description: 'The Tag To Deploy To Development env'
       required: true
 
-# on:
-#   push:
-#     branches: ['main']
-
 jobs:
   deploy:
     if: github.event_name == 'workflow_dispatch'
